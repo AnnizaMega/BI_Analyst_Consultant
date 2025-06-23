@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="app-title">Anniza Mega – BI Analyst & Freelance Data Consultant</title>
+    <!-- Chosen Palette: Cream & Sage -->
+    <!-- Application Structure Plan: The application is structured as a single-page narrative scroll, guiding the user on a journey. It starts with a strong value proposition (Hero), identifies with the user's pain points (Problem), presents a clear way out (Solution), demystifies the collaboration process (Process), provides tangible proof of capability (Interactive Portfolio/Services), builds trust (Why Me), and ends with a clear call to action (Footer). This narrative flow is more persuasive and engaging for a potential client than a simple slide-by-slide presentation, as it logically builds a case for the service. -->
+    <!-- Visualization & Content Choices: Problem/Solution: Cards with icons for scannability. Process: A CSS-based timeline to visually represent flow. Portfolio: An interactive Chart.js bar chart to demonstrate BI skills tangibly, not just state them. Users can click filters to see the chart update, simulating a real dashboard. This is justified as it 'shows' the value proposition directly. Services: A simple, clean table. Why Me: A two-column layout to separate skills and work philosophy. All interactions are handled by Vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF6;
+            color: #3D405B;
+        }
+        .text-sage { color: #7D9A89; }
+        .bg-sage { background-color: #7D9A89; }
+        .border-sage { border-color: #7D9A89; }
+        .text-tan { color: #D5C4A1; }
+        .bg-tan-light { background-color: #F3EFE4; }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #7D9A89;
+            color: #FFFFFF;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #7D9A89;
+        }
+        .chart-container {
+            position: relative;
+            height: 40vh;
+            max-height: 450px;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Style for the image placeholder to look like a dashboard preview */
+        .dashboard-placeholder {
+            width: 100%;
+            height: 300px; /* Fixed height for illustration */
+            max-width: 600px;
+            background-color: #e0e0e0;
+            border: 1px dashed #a0a0a0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #606060;
+            font-size: 1.2rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            margin: 0 auto; /* Center the placeholder */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 bg-white/80 backdrop-blur-sm z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div id="header-name" class="text-xl font-bold text-sage">Anniza Mega</div>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#problem" class="nav-link font-semibold" id="nav-problem">Masalah</a>
+                <a href="#services" class="nav-link font-semibold" id="nav-services">Layanan</a>
+                <a href="#process" class="nav-link font-semibold" id="nav-process">Proses</a>
+                <a href="#why-me" class="nav-link font-semibold" id="nav-whyme">Mengapa Saya</a>
+                <a href="#contact" class="btn btn-primary" id="header-contact-btn">Hubungi Saya</a>
+                <button id="lang-toggle-btn" class="py-2 px-3 bg-gray-200 rounded-md text-gray-700 font-semibold text-sm">EN / ID</button>
+            </div>
+            <div class="md:hidden flex items-center space-x-4">
+                <button id="lang-toggle-btn-mobile" class="py-2 px-3 bg-gray-200 rounded-md text-gray-700 font-semibold text-sm">EN / ID</button>
+                <button id="menu-btn" class="text-gray-700 focus:outline-none">
+                    <span class="text-3xl">☰</span>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+             <a href="#problem" class="block py-2 px-4 text-sm hover:bg-gray-200" id="mobile-nav-problem">Masalah</a>
+             <a href="#services" class="block py-2 px-4 text-sm hover:bg-gray-200" id="mobile-nav-services">Layanan</a>
+             <a href="#process" class="block py-2 px-4 text-sm hover:bg-gray-200" id="mobile-nav-process">Proses</a>
+             <a href="#why-me" class="block py-2 px-4 text-sm hover:bg-gray-200" id="mobile-nav-whyme">Mengapa Saya</a>
+             <a href="#contact" class="block py-2 px-4 text-sm bg-sage text-white text-center font-bold" id="mobile-header-contact-btn">Hubungi Saya</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 id="hero-title" class="text-4xl md:text-6xl font-bold leading-tight mb-4">Business Intelligence for <br><span class="text-sage">Smart Business Decisions</span></h1>
+                <p id="hero-subtitle" class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">Transform Your Business Data into Growth-Driven Insights</p>
+                <a href="https://wa.me/6287878052021" target="_blank" class="btn btn-primary text-lg" id="hero-cta-btn">Let's Discuss</a>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section id="problem" class="py-20 bg-tan-light">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 id="problem-title" class="text-3xl md:text-4xl font-bold mb-4">Banyak Bisnis Punya Data, Tapi Bingung Menggunakannya</h2>
+                    <p id="problem-subtitle" class="text-gray-600 max-w-2xl mx-auto">Keputusan penting seringkali hanya berdasarkan perasaan, bukan fakta. Tanpa insight yang jelas, pertumbuhan bisnis hanya menjadi tebakan.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">❓</div>
+                        <h3 id="problem-card1-title" class="font-bold text-lg mb-2">Produk Menguntungkan</h3>
+                        <p id="problem-card1-desc" class="text-gray-600 text-sm">Tidak tahu produk mana yang menjadi pendorong utama keuntungan.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">⏰</div>
+                        <h3 id="problem-card2-title" class="font-bold text-lg mb-2">Waktu Promo Efektif</h3>
+                        <p id="problem-card2-desc" class="text-gray-600 text-sm">Bingung menentukan kapan waktu terbaik untuk promosi agar hasilnya maksimal.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">👥</div>
+                        <h3 id="problem-card3-title" class="font-bold text-lg mb-2">Perilaku Pelanggan</h3>
+                        <p id="problem-card3-desc" class="text-gray-600 text-sm">Tidak paham siapa pelanggan setia Anda dan apa yang mereka inginkan.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">🤔</div>
+                        <h3 id="problem-card4-title" class="font-bold text-lg mb-2">Keputusan Bisnis</h3>
+                        <p id="problem-card4-desc" class="text-gray-600 text-sm">Mengandalkan intuisi semata yang berisiko tinggi dan sulit diukur.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section id="solution" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 id="solution-title" class="text-3xl md:text-4xl font-bold mb-4">Saya Bantu Ubah Data Anda Menjadi <span class="text-sage">Insight yang Bisa Ditindaklanjuti</span></h2>
+                     <p id="solution-subtitle" class="text-gray-600 max-w-2xl mx-auto">Saya menyediakan solusi konkret untuk mengubah data mentah menjadi panduan strategis yang jelas untuk bisnis Anda.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-4">
+                        <span class="text-2xl">✅</span>
+                        <div>
+                            <h3 id="solution-card1-title" class="font-bold text-xl">Dashboard Penjualan & Produk</h3>
+                            <p id="solution-card1-desc" class="text-gray-600">Visualisasi interaktif untuk memantau performa bisnis secara real-time.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-4">
+                        <span class="text-2xl">✅</span>
+                        <div>
+                            <h3 id="solution-card2-title" class="font-bold text-xl">Segmentasi & Perilaku Pelanggan</h3>
+                            <p id="solution-card2-desc" class="text-gray-600">Pahami siapa pelanggan Anda dan bagaimana cara terbaik melayani mereka.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-4">
+                        <span class="text-2xl">✅</span>
+                        <div>
+                            <h3 id="solution-card3-title" class="font-bold text-xl">Insight Bisnis yang Mudah Dipahami</h3>
+                            <p id="solution-card3-desc" class="text-gray-600">Laporan yang ringkas dan jelas, memberikan rekomendasi konkret.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-4">
+                        <span class="text-2xl">✅</span>
+                        <div>
+                            <h3 id="solution-card4-title" class="font-bold text-xl">Sistem Visualisasi untuk Tim Internal</h3>
+                            <p id="solution-card4-desc" class="text-gray-600">Memberdayakan tim Anda dengan data untuk pengambilan keputusan harian.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services and Portfolio Section -->
+        <section id="services" class="py-20 bg-tan-light">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 id="services-portfolio-title" class="text-3xl md:text-4xl font-bold">Layanan & Contoh Proyek</h2>
+                     <p id="services-portfolio-subtitle" class="text-gray-600 max-w-2xl mx-auto">Jelajahi layanan yang saya tawarkan dan lihat contoh nyata bagaimana saya dapat membantu bisnis seperti milik Anda.</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="mb-8 flex justify-center border-b">
+                    <button id="services-tab-btn" class="py-4 px-6 block hover:text-sage focus:outline-none text-sage border-b-2 font-medium border-sage">Layanan Konsultasi</button>
+                    <button id="portfolio-tab-btn" class="py-4 px-6 block hover:text-sage focus:outline-none text-gray-500">Portofolio Interaktif</button>
+                </div>
+
+                <!-- Services Content -->
+                <div id="services-content">
+                    <div class="overflow-x-auto">
+                         <table class="w-full max-w-4xl mx-auto text-left bg-white shadow-md rounded-lg">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th id="table-header-service" class="p-4 font-bold text-gray-700">Layanan</th>
+                                    <th id="table-header-description" class="p-4 font-bold text-gray-700">Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b">
+                                    <td id="service-row1-title" class="p-4 font-semibold">Sales Dashboard</td>
+                                    <td id="service-row1-desc" class="p-4 text-gray-600">Pantau omzet, tren penjualan, dan performa produk terlaris secara interaktif.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td id="service-row2-title" class="p-4 font-semibold">Segmentasi Pelanggan</td>
+                                    <td id="service-row2-desc" class="p-4 text-gray-600">Analisis RFM (Recency, Frequency, Monetary), loyalitas, dan perilaku untuk personalisasi marketing.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td id="service-row3-title" class="p-4 font-semibold">Insight Report</td>
+                                    <td id="service-row3-desc" class="p-4 text-gray-600">Laporan mendalam dengan rekomendasi strategis yang dapat langsung ditindaklanjuti.</td>
+                                </tr>
+                                <tr>
+                                    <td id="service-row4-title" class="p-4 font-semibold">Sistem Kustom</td>
+                                    <td id="service-row4-desc" class="p-4 text-gray-600">Kolaborasi dengan tim developer internal Anda untuk membangun solusi BI yang terintegrasi.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p id="pricing-info" class="text-center text-gray-700 mt-6 max-w-4xl mx-auto">
+                            Harga untuk Dashboard Analisa Sederhana: <span class="font-bold text-sage">Mulai dari Rp300.000</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Portfolio Content -->
+                <div id="portfolio-content" class="hidden text-center">
+                    <p id="portfolio-desc1" class="mb-4 text-gray-600">Ini adalah contoh visualisasi interaktif untuk menganalisa produk terlaris. Coba klik filter kategori di bawah ini.</p>
+                    <div class="mb-6">
+                        <button class="portfolio-filter-btn btn btn-primary" data-category="A" id="filter-btn-A">Kategori A</button>
+                        <button class="portfolio-filter-btn btn bg-white text-gray-700" data-category="B" id="filter-btn-B">Kategori B</button>
+                        <button class="portfolio-filter-btn btn bg-white text-gray-700" data-category="C" id="filter-btn-C">Kategori C</button>
+                    </div>
+                    <div class="chart-container bg-white p-4 rounded-lg shadow-lg mb-8">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    <p id="portfolio-desc2" class="mb-4 text-gray-600">Ini adalah contoh tampilan dashboard yang bisa saya buat.</p>
+                    <div class="dashboard-placeholder">
+                        <span id="dashboard-placeholder-text">Contoh Tampilan Dashboard Anda Akan Muncul Di Sini</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section id="process" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 id="process-title" class="text-3xl md:text-4xl font-bold mb-4">Langkah Kerja Saya</h2>
+                    <p id="process-subtitle" class="text-gray-600 max-w-2xl mx-auto">Proses kerja saya terstruktur, transparan, dan berfokus pada hasil untuk memastikan kesuksesan proyek Anda.</p>
+                </div>
+                <div class="relative">
+                    <!-- The connecting line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-tan-light -translate-y-1/2"></div>
+                    <div class="grid md:grid-cols-4 gap-8 relative">
+                         <div class="text-center flex flex-col items-center">
+                            <div class="w-16 h-16 bg-sage text-white rounded-full flex items-center justify-center font-bold text-2xl mb-4 z-10">1</div>
+                            <h3 id="process-step1-title" class="font-bold text-xl mb-2">Kickoff</h3>
+                            <p id="process-step1-desc" class="text-gray-600">Diskusi awal untuk memahami secara mendalam kebutuhan dan tujuan bisnis Anda.</p>
+                        </div>
+                         <div class="text-center flex flex-col items-center">
+                            <div class="w-16 h-16 bg-sage text-white rounded-full flex items-center justify-center font-bold text-2xl mb-4 z-10">2</div>
+                            <h3 id="process-step2-title" class="font-bold text-xl mb-2">Review Data</h3>
+                            <p id="process-step2-desc" class="text-gray-600">Membersihkan, mempersiapkan, dan menganalisa data Anda untuk menemukan potensi tersembunyi.</p>
+                        </div>
+                         <div class="text-center flex flex-col items-center">
+                            <div class="w-16 h-16 bg-sage text-white rounded-full flex items-center justify-center font-bold text-2xl mb-4 z-10">3</div>
+                            <h3 id="process-step3-title" class="font-bold text-xl mb-2">Dashboard & Insight</h3>
+                            <p id="process-step3-desc" class="text-gray-600">Membuat visualisasi data yang intuitif dan menyusun laporan insight yang jelas.</p>
+                        </div>
+                         <div class="text-center flex flex-col items-center">
+                            <div class="w-16 h-16 bg-sage text-white rounded-full flex items-center justify-center font-bold text-2xl mb-4 z-10">4</div>
+                            <h3 id="process-step4-title" class="font-bold text-xl mb-2">Handover</h3>
+                            <p id="process-step4-desc" class="text-gray-600">Pelatihan untuk tim Anda dan dukungan berkelanjutan jika diperlukan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Me Section -->
+        <section id="why-me" class="py-20 bg-tan-light">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h2 id="whyme-title" class="text-3xl md:text-4xl font-bold mb-4">Kenapa Bekerja dengan Saya?</h2>
+                     <p id="whyme-subtitle" class="text-gray-600 max-w-2xl mx-auto">Saya menggabungkan keahlian teknis dengan pemahaman bisnis untuk memberikan solusi yang benar-benar berdampak.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 id="whyme-card1-title" class="font-bold text-2xl text-sage mb-4">Kredibilitas Terbukti</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li id="whyme-card1-li1" class="flex items-start"><span class="font-bold text-sage mr-3">✔</span> 3+ proyek BI berhasil untuk UMKM & individu.</li>
+                            <li id="whyme-card1-li2" class="flex items-start"><span class="font-bold text-sage mr-3">✔</span> Sertifikasi profesional dari Google, Dibimbing, & IBM.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 id="whyme-card2-title" class="font-bold text-2xl text-sage mb-4">Pendekatan Kolaboratif</h3>
+                         <ul class="space-y-3 text-gray-700">
+                             <li id="whyme-card2-li1" class="flex items-start"><span class="font-bold text-sage mr-3">✔</span> Pendekatan custom yang disesuaikan dengan kebutuhan unik bisnis Anda.</li>
+                             <li id="whyme-card2-li2" class="flex items-start"><span class="font-bold text-sage mr-3">✔</span> Siap berkolaborasi secara teknis dengan tim developer internal Anda.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer / Call to Action -->
+    <footer id="contact" class="bg-gray-800 text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+             <h2 id="footer-cta-title" class="text-3xl md:text-4xl font-bold mb-4">Let’s Turn Your Data Into Decisions</h2>
+             <p id="footer-cta-message" class="max-w-2xl mx-auto mb-8">Saya siap bantu Anda membangun dashboard, insight, dan sistem berbasis data untuk bisnis yang lebih efisien dan menguntungkan.</p>
+             <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                <a href="mailto:annizabianalyst@gmail.com" class="hover:text-tan transition-colors">📩 annizabianalyst@gmail.com</a>
+                <a href="https://wa.me/6287878052021" target="_blank" class="hover:text-tan transition-colors">📱 WhatsApp: +6287878052021</a>
+                <a href="https://annizamega.github.io/Project-Portfolio/" target="_blank" class="hover:text-tan transition-colors">🔗 GitHub Portfolio</a>
+                <a href="https://www.linkedin.com/in/annizamega/" target="_blank" class="hover:text-tan transition-colors">🔗 LinkedIn</a>
+             </div>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Translations object
+            const translations = {
+                'id': {
+                    'app-title': 'Anniza Mega – BI Analyst & Freelance Data Consultant',
+                    'header-name': 'Anniza Mega',
+                    'nav-problem': 'Masalah',
+                    'nav-services': 'Layanan',
+                    'nav-process': 'Proses',
+                    'nav-whyme': 'Mengapa Saya',
+                    'header-contact-btn': 'Hubungi Saya',
+                    'mobile-nav-problem': 'Masalah',
+                    'mobile-nav-services': 'Layanan',
+                    'mobile-nav-process': 'Proses',
+                    'mobile-nav-whyme': 'Mengapa Saya',
+                    'mobile-header-contact-btn': 'Hubungi Saya',
+                    'hero-title': 'Business Intelligence untuk <br><span class="text-sage">Keputusan Bisnis Cerdas</span>',
+                    'hero-subtitle': 'Ubah Data Bisnis Anda menjadi Insight yang Mendorong Pertumbuhan',
+                    'hero-cta-btn': "Mari Berdiskusi",
+                    'problem-title': 'Banyak Bisnis Punya Data, Tapi Bingung Menggunakannya',
+                    'problem-subtitle': 'Keputusan penting seringkali hanya berdasarkan perasaan, bukan fakta. Tanpa insight yang jelas, pertumbuhan bisnis hanya menjadi tebakan.',
+                    'problem-card1-title': 'Produk Menguntungkan',
+                    'problem-card1-desc': 'Tidak tahu produk mana yang menjadi pendorong utama keuntungan.',
+                    'problem-card2-title': 'Waktu Promo Efektif',
+                    'problem-card2-desc': 'Bingung menentukan kapan waktu terbaik untuk promosi agar hasilnya maksimal.',
+                    'problem-card3-title': 'Perilaku Pelanggan',
+                    'problem-card3-desc': 'Tidak paham siapa pelanggan setia Anda dan apa yang mereka inginkan.',
+                    'problem-card4-title': 'Keputusan Bisnis',
+                    'problem-card4-desc': 'Mengandalkan intuisi semata yang berisiko tinggi dan sulit diukur.',
+                    'solution-title': 'Saya Bantu Ubah Data Anda Menjadi <span class="text-sage">Insight yang Bisa Ditindaklanjuti</span>',
+                    'solution-subtitle': 'Saya menyediakan solusi konkret untuk mengubah data mentah menjadi panduan strategis yang jelas untuk bisnis Anda.',
+                    'solution-card1-title': 'Dashboard Penjualan & Produk',
+                    'solution-card1-desc': 'Visualisasi interaktif untuk memantau performa bisnis secara real-time.',
+                    'solution-card2-title': 'Segmentasi & Perilaku Pelanggan',
+                    'solution-card2-desc': 'Pahami siapa pelanggan Anda dan bagaimana cara terbaik melayani mereka.',
+                    'solution-card3-title': 'Insight Bisnis yang Mudah Dipahami',
+                    'solution-card3-desc': 'Laporan yang ringkas dan jelas, memberikan rekomendasi konkret.',
+                    'solution-card4-title': 'Sistem Visualisasi untuk Tim Internal',
+                    'solution-card4-desc': 'Memberdayakan tim Anda dengan data untuk pengambilan keputusan harian.',
+                    'services-portfolio-title': 'Layanan & Contoh Proyek',
+                    'services-portfolio-subtitle': 'Jelajahi layanan yang saya tawarkan dan lihat contoh nyata bagaimana saya dapat membantu bisnis seperti milik Anda.',
+                    'services-tab-btn': 'Layanan Konsultasi',
+                    'portfolio-tab-btn': 'Portofolio Interaktif',
+                    'table-header-service': 'Layanan',
+                    'table-header-description': 'Deskripsi',
+                    'service-row1-title': 'Sales Dashboard',
+                    'service-row1-desc': 'Pantau omzet, tren penjualan, dan performa produk terlaris secara interaktif.',
+                    'service-row2-title': 'Segmentasi Pelanggan',
+                    'service-row2-desc': 'Analisis RFM (Recency, Frequency, Monetary), loyalitas, dan perilaku untuk personalisasi marketing.',
+                    'service-row3-title': 'Insight Report',
+                    'service-row3-desc': 'Laporan mendalam dengan rekomendasi strategis yang dapat langsung ditindaklanjuti.',
+                    'service-row4-title': 'Sistem Kustom',
+                    'service-row4-desc': 'Kolaborasi dengan tim developer internal Anda untuk membangun solusi BI yang terintegrasi.',
+                    'pricing-info': 'Harga untuk Dashboard Analisa Sederhana: <span class="font-bold text-sage">Mulai dari Rp300.000</span>',
+                    'portfolio-desc1': 'Ini adalah contoh visualisasi interaktif untuk menganalisa produk terlaris. Coba klik filter kategori di bawah ini.',
+                    'filter-btn-A': 'Kategori A',
+                    'filter-btn-B': 'Kategori B',
+                    'filter-btn-C': 'Kategori C',
+                    'portfolio-desc2': 'Ini adalah contoh tampilan dashboard yang bisa saya buat.',
+                    'dashboard-placeholder-text': 'Contoh Tampilan Dashboard Anda Akan Muncul Di Sini',
+                    'process-title': 'Langkah Kerja Saya',
+                    'process-subtitle': 'Proses kerja saya terstruktur, transparan, dan berfokus pada hasil untuk memastikan kesuksesan proyek Anda.',
+                    'process-step1-title': 'Kickoff',
+                    'process-step1-desc': 'Diskusi awal untuk memahami secara mendalam kebutuhan dan tujuan bisnis Anda.',
+                    'process-step2-title': 'Review Data',
+                    'process-step2-desc': 'Membersihkan, mempersiapkan, dan menganalisa data Anda untuk menemukan potensi tersembunyi.',
+                    'process-step3-title': 'Dashboard & Insight',
+                    'process-step3-desc': 'Membuat visualisasi data yang intuitif dan menyusun laporan insight yang jelas.',
+                    'process-step4-title': 'Handover',
+                    'process-step4-desc': 'Pelatihan untuk tim Anda dan dukungan berkelanjutan jika diperlukan.',
+                    'whyme-title': 'Kenapa Bekerja dengan Saya?',
+                    'whyme-subtitle': 'Saya menggabungkan keahlian teknis dengan pemahaman bisnis untuk memberikan solusi yang benar-benar berdampak.',
+                    'whyme-card1-title': 'Kredibilitas Terbukti',
+                    'whyme-card1-li1': '✔ 3+ proyek BI berhasil untuk UMKM & individu.',
+                    'whyme-card1-li2': '✔ Sertifikasi profesional dari Google, Dibimbing, & IBM.',
+                    'whyme-card2-title': 'Pendekatan Kolaboratif',
+                    'whyme-card2-li1': '✔ Pendekatan custom yang disesuaikan dengan kebutuhan unik bisnis Anda.',
+                    'whyme-card2-li2': '✔ Siap berkolaborasi secara teknis dengan tim developer internal Anda.',
+                    'footer-cta-title': 'Mari Ubah Data Anda Menjadi Keputusan',
+                    'footer-cta-message': 'Saya siap bantu Anda membangun dashboard, insight, dan sistem berbasis data untuk bisnis yang lebih efisien dan menguntungkan.',
+                    'chart-label': 'Total Penjualan (dalam Ribu Rupiah)',
+                    'chart-currency-suffix': 'k',
+                    'chart-tooltip-prefix': 'Rp'
+                },
+                'en': {
+                    'app-title': 'Anniza Mega – BI Analyst & Freelance Data Consultant',
+                    'header-name': 'Anniza Mega',
+                    'nav-problem': 'Problem',
+                    'nav-services': 'Services',
+                    'nav-process': 'Process',
+                    'nav-whyme': 'Why Me',
+                    'header-contact-btn': 'Contact Me',
+                    'mobile-nav-problem': 'Problem',
+                    'mobile-nav-services': 'Services',
+                    'mobile-nav-process': 'Process',
+                    'mobile-nav-whyme': 'Why Me',
+                    'mobile-header-contact-btn': 'Contact Me',
+                    'hero-title': 'Business Intelligence for <br><span class="text-sage">Smart Business Decisions</span>',
+                    'hero-subtitle': 'Transform Your Business Data into Growth-Driven Insights',
+                    'hero-cta-btn': "Let's Discuss",
+                    'problem-title': 'Many Businesses Have Data, But Are Confused How to Use It',
+                    'problem-subtitle': 'Important decisions are often based purely on feeling, not facts. Without clear insights, business growth is just a guess.',
+                    'problem-card1-title': 'Profitable Products',
+                    'problem-card1-desc': 'Unsure which products are the main drivers of profit.',
+                    'problem-card2-title': 'Effective Promo Timing',
+                    'problem-card2-desc': 'Confused about the best time for promotions to maximize results.',
+                    'problem-card3-title': 'Customer Behavior',
+                    'problem-card3-desc': 'Do not understand who your loyal customers are and what they want.',
+                    'problem-card4-title': 'Business Decisions',
+                    'problem-card4-desc': 'Relying solely on intuition which is high-risk and hard to measure.',
+                    'solution-title': 'I Help Transform Your Data Into <span class="text-sage">Actionable Insights</span>',
+                    'solution-subtitle': 'I provide concrete solutions to turn raw data into clear strategic guidance for your business.',
+                    'solution-card1-title': 'Sales & Product Dashboard',
+                    'solution-card1-desc': 'Interactive visualizations to monitor business performance in real-time.',
+                    'solution-card2-title': 'Customer Segmentation & Behavior',
+                    'solution-card2-desc': 'Understand who your customers are and how best to serve them.',
+                    'solution-card3-title': 'Easy-to-Understand Business Insights',
+                    'solution-card3-desc': 'Concise and clear reports, providing concrete recommendations.',
+                    'solution-card4-title': 'Visualization Systems for Internal Teams',
+                    'solution-card4-desc': 'Empower your team with data for daily decision-making.',
+                    'services-portfolio-title': 'Services & Project Examples',
+                    'services-portfolio-subtitle': 'Explore the services I offer and see real examples of how I can help businesses like yours.',
+                    'services-tab-btn': 'Consulting Services',
+                    'portfolio-tab-btn': 'Interactive Portfolio',
+                    'table-header-service': 'Service',
+                    'table-header-description': 'Description',
+                    'service-row1-title': 'Sales Dashboard',
+                    'service-row1-desc': 'Monitor sales turnover, trends, and best-selling product performance interactively.',
+                    'service-row2-title': 'Customer Segmentation',
+                    'service-row2-desc': 'RFM (Recency, Frequency, Monetary) analysis, loyalty, and behavior for marketing personalization.',
+                    'service-row3-title': 'Insight Report',
+                    'service-row3-desc': 'In-depth reports with actionable strategic recommendations.',
+                    'service-row4-title': 'Custom System',
+                    'service-row4-desc': 'Collaborate with your internal development team to build integrated BI solutions.',
+                    'pricing-info': 'Pricing for Simple Analysis Dashboard: <span class="font-bold text-sage">Starting from IDR 300,000</span>',
+                    'portfolio-desc1': 'This is an example of an interactive visualization to analyze best-selling products. Try clicking the category filters below.',
+                    'filter-btn-A': 'Category A',
+                    'filter-btn-B': 'Category B',
+                    'filter-btn-C': 'Category C',
+                    'portfolio-desc2': 'This is an example of a dashboard display I can create.',
+                    'dashboard-placeholder-text': 'Your Dashboard Preview Will Appear Here',
+                    'process-title': 'My Work Process',
+                    'process-subtitle': 'My work process is structured, transparent, and results-focused to ensure your project\'s success.',
+                    'process-step1-title': 'Kickoff',
+                    'process-step1-desc': 'Initial discussion to deeply understand your business needs and goals.',
+                    'process-step2-title': 'Data Review',
+                    'process-step2-desc': 'Cleaning, preparing, and analyzing your data to find hidden potential.',
+                    'process-step3-title': 'Dashboard & Insight',
+                    'process-step3-desc': 'Creating intuitive data visualizations and compiling clear insight reports.',
+                    'process-step4-title': 'Handover',
+                    'process-step4-desc': 'Training for your team and ongoing support if needed.',
+                    'whyme-title': 'Why Work with Me?',
+                    'whyme-subtitle': 'I combine technical expertise with business understanding to deliver truly impactful solutions.',
+                    'whyme-card1-title': 'Proven Credibility',
+                    'whyme-card1-li1': '✔ 3+ successful BI projects for SMEs & individuals.',
+                    'whyme-card1-li2': '✔ Professional certifications from Google, Dibimbing, & IBM.',
+                    'whyme-card2-title': 'Collaborative Approach',
+                    'whyme-card2-li1': '✔ Custom approach tailored to your unique business needs.',
+                    'whyme-card2-li2': '✔ Ready to collaborate technically with your internal development team.',
+                    'footer-cta-title': 'Let’s Turn Your Data Into Decisions',
+                    'footer-cta-message': 'I am ready to help you build dashboards, insights, and data-driven systems for a more efficient and profitable business.',
+                    'chart-label': 'Total Sales (in Thousand Rupiah)',
+                    'chart-currency-suffix': 'k',
+                    'chart-tooltip-prefix': 'Rp'
+                }
+            };
+
+            let currentLang = localStorage.getItem('lang') || 'id'; // Default to Indonesian
+
+            // Function to update text content based on selected language
+            function setLanguage(lang) {
+                currentLang = lang;
+                localStorage.setItem('lang', lang);
+
+                // Update document title
+                document.getElementById('app-title').textContent = translations[lang]['app-title'];
+
+                // Update all elements with IDs
+                for (const id in translations[lang]) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        if (id === 'hero-title' || id === 'solution-title' || id === 'pricing-info') {
+                             element.innerHTML = translations[lang][id];
+                        } else {
+                            element.textContent = translations[lang][id];
+                        }
+                    }
+                }
+
+                // Update chart labels and tooltips
+                if (portfolioChart) {
+                    portfolioChart.data.datasets[0].label = translations[lang]['chart-label'];
+                    portfolioChart.options.scales.y.ticks.callback = function(value) {
+                        return translations[lang]['chart-tooltip-prefix'] + value + translations[lang]['chart-currency-suffix'];
+                    };
+                    portfolioChart.options.plugins.tooltip.callbacks.label = function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += translations[lang]['chart-tooltip-prefix'] + context.parsed.y + '.000';
+                        }
+                        return label;
+                    };
+                    portfolioChart.update();
+                }
+
+                // Update language toggle button text
+                const langBtn = document.getElementById('lang-toggle-btn');
+                const langBtnMobile = document.getElementById('lang-toggle-btn-mobile');
+                if (langBtn) langBtn.textContent = (lang === 'id' ? 'EN / ID' : 'ID / EN');
+                if (langBtnMobile) langBtnMobile.textContent = (lang === 'id' ? 'EN / ID' : 'ID / EN');
+            }
+
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Language Toggle
+            const langToggleBtn = document.getElementById('lang-toggle-btn');
+            const langToggleBtnMobile = document.getElementById('lang-toggle-btn-mobile');
+
+            if (langToggleBtn) {
+                langToggleBtn.addEventListener('click', () => {
+                    setLanguage(currentLang === 'id' ? 'en' : 'id');
+                });
+            }
+            if (langToggleBtnMobile) {
+                langToggleBtnMobile.addEventListener('click', () => {
+                    setLanguage(currentLang === 'id' ? 'en' : 'id');
+                });
+            }
+
+
+            // Tabs Logic
+            const servicesTabBtn = document.getElementById('services-tab-btn');
+            const portfolioTabBtn = document.getElementById('portfolio-tab-btn');
+            const servicesContent = document.getElementById('services-content');
+            const portfolioContent = document.getElementById('portfolio-content');
+            const filterButtons = document.querySelectorAll('.portfolio-filter-btn');
+
+            servicesTabBtn.addEventListener('click', () => {
+                servicesContent.classList.remove('hidden');
+                portfolioContent.classList.add('hidden');
+                servicesTabBtn.classList.add('text-sage', 'border-sage');
+                servicesTabBtn.classList.remove('text-gray-500');
+                portfolioTabBtn.classList.add('text-gray-500');
+                portfolioTabBtn.classList.remove('text-sage', 'border-sage');
+            });
+
+            portfolioTabBtn.addEventListener('click', () => {
+                portfolioContent.classList.remove('hidden');
+                servicesContent.classList.add('hidden');
+                portfolioTabBtn.classList.add('text-sage', 'border-sage');
+                portfolioTabBtn.classList.remove('text-gray-500');
+                servicesTabBtn.classList.add('text-gray-500');
+                servicesTabBtn.classList.remove('text-sage', 'border-sage');
+            });
+
+            // Chart.js Portfolio
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            const chartData = {
+                A: {
+                    labels: ['Produk A1', 'Produk A2', 'Produk A3', 'Produk A4', 'Produk A5'],
+                    values: [450, 320, 280, 250, 180],
+                    labels_en: ['Product A1', 'Product A2', 'Product A3', 'Product A4', 'Product A5']
+                },
+                B: {
+                    labels: ['Produk B1', 'Produk B2', 'Produk B3', 'Produk B4', 'Produk B5'],
+                    values: [550, 480, 410, 350, 220],
+                    labels_en: ['Product B1', 'Product B2', 'Product B3', 'Product B4', 'Product B5']
+                },
+                C: {
+                    labels: ['Produk C1', 'Produk C2', 'Produk C3', 'Produk C4', 'Produk C5'],
+                    values: [250, 220, 180, 150, 90],
+                    labels_en: ['Product C1', 'Product C2', 'Product C3', 'Product C4', 'Product C5']
+                }
+            };
+            
+            function wrapText(str) {
+                const maxLength = 16;
+                if (str.length <= maxLength) {
+                    return [str];
+                }
+                const words = str.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length <= maxLength) {
+                        currentLine += word + ' ';
+                    } else {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            }
+
+            const portfolioChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.A.labels,
+                    datasets: [{
+                        label: translations[currentLang]['chart-label'],
+                        data: chartData.A.values,
+                        backgroundColor: 'rgba(125, 154, 137, 0.6)',
+                        borderColor: 'rgba(125, 154, 137, 1)',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e0e0e0'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return translations[currentLang]['chart-tooltip-prefix'] + value + translations[currentLang]['chart-currency-suffix'];
+                                }
+                            }
+                        },
+                        x: {
+                           grid: {
+                                display: false
+                           }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#3D405B',
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 12
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += translations[currentLang]['chart-tooltip-prefix'] + context.parsed.y + '.000';
+                                    }
+                                    return label;
+                                },
+                                title: function(context) {
+                                    const rawLabel = context[0].label;
+                                    return wrapText(rawLabel);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Filter buttons logic
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.dataset.category;
+                    
+                    // Update chart data based on current language
+                    portfolioChart.data.labels = currentLang === 'id' ? chartData[category].labels : chartData[category].labels_en;
+                    portfolioChart.data.datasets[0].data = chartData[category].values;
+                    portfolioChart.update();
+
+                    // Update button styles
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('bg-white', 'text-gray-700');
+                    });
+                    button.classList.add('btn-primary');
+                    button.classList.remove('bg-white', 'text-gray-700');
+                });
+            });
+
+            // Initial language setting
+            setLanguage(currentLang);
+        });
+    </script>
+</body>
+</html>
